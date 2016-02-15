@@ -1,0 +1,16 @@
+db:
+  image: postgres:9.4
+  expose:
+    - "5432"
+  environment:
+    POSTGRES_USER: notifications
+    POSTGRES_PASSWORD: notifications
+    POSTGRES_DB: notifications
+rails:
+  ports:
+    - "3000:3000"
+  build: .
+  links:
+    - db
+  environment:
+    DATABASE_URL: 'postgres://notifications:notifications@db:5432/notifications'
