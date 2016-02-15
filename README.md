@@ -1,28 +1,17 @@
 <img src="http://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/641/large_Ello.1000x1000.png" width="200px" height="200px" />
 
-# Notifications-Stream - Postgres-based per-user activity feeds
+# Postgres-based per-user activity feeds
 
 [![Build Status](https://travis-ci.org/ello/notifications-stream.svg?branch=master)](https://travis-ci.org/ello/notifications-stream)
 
-Within Ello, we have two very distinct styles of streams that we display to a
-user. These each have different properties, and we use different services to
-back them.
+Within Ello, we have two very distinct styles of streams that we display to a user. These each have different properties, and we use different services to store and serve them.
 
-One is a content stream, consisting of posts from other users that one has
-elected to follow. Within Ello, these are the "Following" and "Starred"
-sections. While we used to serve these streams out of Postgres, we now use our
-[Streams service](https://github.com/ello/streams] in front of [Soundcloud's Roshi](https://github.com/soundcloud/roshi). This approach is much more speedy and space-efficient (it requires only a single write per post, instead of a write-per-follower), and solves a number of usabilility issues around rewriting streams on a per-user basis as they change their stream composition via following, starring and blocking. However, despite its robust safety features, Roshi is designed to be used as a cache more than the source of record for the data served out of it.
+One is a content stream, consisting of posts from other users that one has elected to follow. Within Ello, these are the "Following" and "Starred" sections of the app. While we used to serve these streams out of Postgres, we now use our
+[Streams service](https://github.com/ello/streams) in front of [Soundcloud's Roshi](https://github.com/soundcloud/roshi). Streams is much more speedy and space-efficient (it requires only a single write per post, instead of a write-per-follower), and solves a number of usabilility issues around rewriting streams on a per-user basis as they change their stream composition via following, starring and blocking. You can read much more about our motivations for switching to Roshi-based streams in the Streams project README. Despite its robust safety features, Roshi is explicitly designed to be used as a cache and NOT the sole source for the data served out of it. Should it fail critically for any reason, we're able torepopulate Roshi from our primary databases in a matter of an hour or two.
 
-The other style of stream consists of notifications, events that
-are relevant just to a single user, based on the activities of others around
-them. These may be anything from mentions to invitation acceptances to new
-comments on posts. In many cases, these events are the source of record for
-the underlying action they represent - locating all of the potential source data
-to compose a feed for a user is a time-consuming and potentially very expensive
-operation, which makes it poorly suited for Roshi's approach to data storage.
-They are still relatively low-cardinality, and have a strong natural key in the
-form of a `{user, subject, kind, timestamp}` tuple. They also area good
-candidate for periodic trimming to reduce the storage size of older data. While a number of data stores could be used for a problem of this shape, our original Postgres-based streams implementation is a great fit, for a variety of reasons. This library is an extraction of that implementation into a standalone library that can be used by any application.
+The other style of stream consists of notifications, events that are relevant just to a single user, based on the activities of others around them. These may be anything from mentions to invitation acceptances to new comments on posts. Within Ello, this is the notifications pane on the web and the notifications tab in the app. In many cases, these events are the source of record for the underlying action they represent - locating all of the potential source data to compose a feed for a user is a time-consuming and potentially very expensive operation, which makes it poorly suited for mass repopulation in case of storage failure. In addition, since a notifications stream is only displayed to a single user, there's no savings in storage space or performance to move that stream to Roshi, and Postgres storage is much cheaper per-gigabyte than Redis storage anyway.
+
+These notifications are relatively low-cardinality, don't require much time to fan out on creation, and have a strong natural key in the form of a `{user, subject, kind, timestamp}` tuple. They are a good candidate for periodic truncation to reduce the storage size of older and infrequently-accessed data. While a number of data stores could be used for a problem of this shape, our original Postgres-based streams implementation is a great fit, for a variety of reasons. This library is an extraction of that implementation into a standalone library that can be used by any application.
 
 
 ### Quickstart
