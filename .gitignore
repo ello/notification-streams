@@ -11,5 +11,5 @@
 /log/*
 /tmp/*
 
-# Ignore Byebug command history file.
-.byebug_history
+# Ignore database.yml
+config/database.yml
