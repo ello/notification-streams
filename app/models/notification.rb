@@ -57,7 +57,6 @@ class Notification < ApplicationRecord
                      NEW_FOLLOWED_USER_POST_KIND ]
   }.freeze
 
-  # We only want to validate the IDs, not the associated model - that way we don't trigger a load
   validates         :user_id,
                     :subject_id,
                     :subject_type,
@@ -70,6 +69,10 @@ class Notification < ApplicationRecord
   validates         :kind,
                     presence: true,
                     inclusion: { in: NOTIFICATION_STREAM_KINDS }
+
+  after_initialize do
+    self.created_at ||= Time.zone.now
+  end
 
   def self.for_user(user_id)
     where(user_id: user_id)
