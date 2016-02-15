@@ -24,8 +24,11 @@ class NotificationsController < ApplicationController
   end
 
   def show
-    render json: Activity.for_notification_stream(params[:user_id],
-                                                  params[:category]).to_json
+    render json: Notification.for_notification_stream(params[:user_id],
+                                                      params[:category],
+                                                      params[:before],
+                                                      params[:limit]
+                                                     ).to_json
   end
 
   private

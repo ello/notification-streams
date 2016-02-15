@@ -78,9 +78,18 @@ class Notification < ApplicationRecord
     where(user_id: user_id)
   end
 
-  def self.for_notification_stream(user_id, category = :all)
+  def self.for_notification_stream(user_id, category = nil, before = nil, limit = nil)
     category ||= :all
-    with_kinds_pg_93_in_fix(for_user(user_id).select(*SELECTED_FIELDS), NOTIFICATION_CATEGORIES[category.to_sym])
+    limit ||= 25
+    before = Time.parse(before) if before.is_a?(String)
+    before ||= Time.zone.now
+
+    with_kinds_pg_93_in_fix(for_user(user_id)
+                            .select(*SELECTED_FIELDS)
+                            .where('created_at < ?', before)
+                            .order('created_at DESC')
+                            .limit(limit),
+                            NOTIFICATION_CATEGORIES[category.to_sym])
   end
 
   def self.with_kinds_pg_93_in_fix(scope, kinds)
@@ -95,5 +104,10 @@ class Notification < ApplicationRecord
     # Will be fixed in 9.4. Replace this with the normal .where(field: array)
     scope.where("(kind || '') IN (?)", kinds)
   end
+
+  def as_json(options = nil)
+    self.attributes.slice(*%w(user_id subject_id subject_type kind created_at))
+  end
+
 
 end
