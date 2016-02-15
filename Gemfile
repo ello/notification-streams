@@ -10,3 +10,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails'
 end
+
+group :test do
+  gem 'rspec-rails-time-metadata'
+end
