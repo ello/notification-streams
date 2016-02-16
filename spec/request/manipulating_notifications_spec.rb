@@ -8,7 +8,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         post '/api/v1/users/1/notifications', params: { subject_id: 10,
                                                         subject_type: 'Post',
                                                         kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
-                                                        created_at: Time.zone.now }
+                                                        created_at: 1.day.ago }
       end
 
       let(:notification) { Notification.first }
@@ -18,7 +18,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         expect(notification.subject_id).to eq(10)
         expect(notification.subject_type).to eq('Post')
         expect(notification.kind).to eq(Notification::COMMENT_MENTION_NOTIFICATION_KIND)
-        expect(notification.created_at).to eq(Time.zone.now)
+        expect(notification.created_at).to eq(1.day.ago)
       end
 
       it 'responds with a 201 and an empty body' do
