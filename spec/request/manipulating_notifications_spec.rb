@@ -45,16 +45,21 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
   describe 'retrieving notifications for a user', freeze_time: true do
     let(:response_json) { JSON.parse(response.body) }
-    let!(:notification1) { CreateNotificationForUser.call(user_id: 1,
-                                                          kind: Notification::COMMENT_NOTIFICATION_KIND,
-                                                          subject_id: 10,
-                                                          subject_type: 'Post',
-                                                          created_at: 2.days.ago) }
-    let!(:notification2) { CreateNotificationForUser.call(user_id: 1,
-                                                          kind: Notification::LOVE_NOTIFICATION_KIND,
-                                                          subject_id: 11,
-                                                          subject_type: 'Post',
-                                                          created_at: 1.day.ago) }
+    let!(:notification1) do
+      CreateNotificationForUser.call(user_id: 1,
+                                     kind: Notification::COMMENT_NOTIFICATION_KIND,
+                                     subject_id: 10,
+                                     subject_type: 'Post',
+                                     created_at: 2.days.ago)
+    end
+    let!(:notification2) do
+      CreateNotificationForUser.call(user_id: 1,
+                                     kind: Notification::LOVE_NOTIFICATION_KIND,
+                                     subject_id: 11,
+                                     subject_type: 'Post',
+                                     created_at: 1.day.ago)
+    end
+
     describe 'without any parameters' do
       before do
         get '/api/v1/users/1/notifications'
@@ -62,18 +67,22 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
       it 'returns notifications in reverse chronological order' do
         expect(response.status).to eq(200)
-        expect(response_json).to eq([
-          { 'user_id' => 1,
-            'subject_id' => 11,
-            'subject_type'=> 'Post',
-            'kind' => 'love_notification',
-            'created_at' => 1.day.ago.as_json },
-          { 'user_id' => 1,
-            'subject_id' => 10,
-            'subject_type' => 'Post',
-            'kind' => 'comment_notification',
-            'created_at' => 2.days.ago.as_json }
-        ])
+        expect(response_json).to eq(
+          [
+            { 'user_id' => 1,
+              'subject_id' => 11,
+              'subject_type' => 'Post',
+              'kind' => 'love_notification',
+              'created_at' => 1.day.ago.as_json
+            },
+            { 'user_id' => 1,
+              'subject_id' => 10,
+              'subject_type' => 'Post',
+              'kind' => 'comment_notification',
+              'created_at' => 2.days.ago.as_json
+            }
+          ]
+        )
       end
     end
 
@@ -84,13 +93,16 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
       it 'only returns notifications in the specified category' do
         expect(response.status).to eq(200)
-        expect(response_json).to eq([
-          { 'user_id' => 1,
-            'subject_id' => 11,
-            'subject_type'=> 'Post',
-            'kind' => 'love_notification',
-            'created_at' => 1.day.ago.as_json }
-        ])
+        expect(response_json).to eq(
+          [
+            { 'user_id' => 1,
+              'subject_id' => 11,
+              'subject_type' => 'Post',
+              'kind' => 'love_notification',
+              'created_at' => 1.day.ago.as_json
+            }
+          ]
+        )
       end
     end
 
@@ -101,13 +113,16 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
       it 'only returns notifications before the specified timestamp' do
         expect(response.status).to eq(200)
-        expect(response_json).to eq([
-          { 'user_id' => 1,
-            'subject_id' => 10,
-            'subject_type' => 'Post',
-            'kind' => 'comment_notification',
-            'created_at' => 2.days.ago.as_json }
-        ])
+        expect(response_json).to eq(
+          [
+            { 'user_id' => 1,
+              'subject_id' => 10,
+              'subject_type' => 'Post',
+              'kind' => 'comment_notification',
+              'created_at' => 2.days.ago.as_json
+            }
+          ]
+        )
       end
     end
 
@@ -118,13 +133,16 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
       it 'only returns the specified number of results' do
         expect(response.status).to eq(200)
-        expect(response_json).to eq([
-          { 'user_id' => 1,
-            'subject_id' => 11,
-            'subject_type'=> 'Post',
-            'kind' => 'love_notification',
-            'created_at' => 1.day.ago.as_json }
-        ])
+        expect(response_json).to eq(
+          [
+            { 'user_id' => 1,
+              'subject_id' => 11,
+              'subject_type' => 'Post',
+              'kind' => 'love_notification',
+              'created_at' => 1.day.ago.as_json
+            }
+          ]
+        )
       end
     end
 

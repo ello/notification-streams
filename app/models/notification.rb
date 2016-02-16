@@ -88,16 +88,16 @@ class Notification < ApplicationRecord
     before = Time.parse(before) if before.is_a?(String)
     before ||= Time.zone.now
 
-    for_user(user_id)
-      .select(*SELECTED_FIELDS)
-      .where(kind: NOTIFICATION_CATEGORIES[category.to_sym])
-      .where('created_at < ?', before)
-      .order('created_at DESC')
-      .limit(limit)
+    for_user(user_id).
+      select(*SELECTED_FIELDS).
+      where(kind: NOTIFICATION_CATEGORIES[category.to_sym]).
+      where('created_at < ?', before).
+      order('created_at DESC').
+      limit(limit)
   end
 
   def as_json(options = nil)
-    self.attributes.slice(*%w(user_id subject_id subject_type kind created_at))
+    attributes.slice(*%w(user_id subject_id subject_type kind created_at))
   end
 
 end
