@@ -3,6 +3,8 @@
 # Postgres-based per-user activity feeds
 
 [![Build Status](https://travis-ci.org/ello/notifications-stream.svg?branch=master)](https://travis-ci.org/ello/notifications-stream)
+[![Code Climate](https://codeclimate.com/github/ello/notification-streams/badges/gpa.svg)](https://codeclimate.com/github/ello/notification-streams)
+[![security](https://hakiri.io/github/ello/notification-streams/master.svg)](https://hakiri.io/github/ello/notification-streams/master)
 
 Within Ello, we have two very distinct styles of streams that we display to a user. These each have different properties, and we use different services to store and serve them.
 
