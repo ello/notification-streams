@@ -50,11 +50,15 @@ class Notification < ApplicationRecord
       LOVE_ON_REPOST_NOTIFICATION_KIND,
       LOVE_ON_ORIGINAL_POST_NOTIFICATION_KIND
     ],
-    mentions: [ POST_MENTION_NOTIFICATION_KIND,
-                COMMENT_MENTION_NOTIFICATION_KIND ],
+    mentions: [
+      POST_MENTION_NOTIFICATION_KIND,
+      COMMENT_MENTION_NOTIFICATION_KIND
+    ],
     reposts: REPOST_NOTIFICATION_KIND,
-    relationships: [ NEW_FOLLOWER_POST_KIND,
-                     NEW_FOLLOWED_USER_POST_KIND ]
+    relationships: [
+      NEW_FOLLOWER_POST_KIND,
+      NEW_FOLLOWED_USER_POST_KIND
+    ]
   }.freeze
 
   validates         :user_id,
@@ -78,22 +82,22 @@ class Notification < ApplicationRecord
     where(user_id: user_id)
   end
 
-  def self.for_notification_stream(user_id, category = :all)
+  def self.for_notification_stream(user_id, category = nil, before = nil, limit = nil)
     category ||= :all
-    with_kinds_pg_93_in_fix(for_user(user_id).select(*SELECTED_FIELDS), NOTIFICATION_CATEGORIES[category.to_sym])
+    limit ||= 25
+    before = Time.parse(before) if before.is_a?(String)
+    before ||= Time.zone.now
+
+    for_user(user_id).
+      select(*SELECTED_FIELDS).
+      where(kind: NOTIFICATION_CATEGORIES[category.to_sym]).
+      where('created_at < ?', before).
+      order('created_at DESC').
+      limit(limit)
   end
 
-  def self.with_kinds_pg_93_in_fix(scope, kinds)
-    # When you say .where(field: array), Rails will
-    # create the (correct/valid) query:
-    # SELECT blah FROM table WHERE table.field IN (array_val1, array_val2)
-    # But there's a bug in the PG 9.3 planner that can't
-    # properly query indexes with IN clauses. To get
-    # around this, we coerce the kind field into a string
-    # to disambiguate the field so PG can properly use it.
-    #
-    # Will be fixed in 9.4. Replace this with the normal .where(field: array)
-    scope.where("(kind || '') IN (?)", kinds)
+  def as_json(options = nil)
+    attributes.slice(*%w(user_id subject_id subject_type kind created_at))
   end
 
 end
