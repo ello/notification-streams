@@ -26,5 +26,12 @@ module NotificationsStream
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Use basic auth if it's configured
+    if ENV['BASIC_AUTH_USER'] && ENV['BASIC_AUTH_PASSWORD']
+      config.middleware.use '::Rack::Auth::Basic' do |u, p|
+        [ u, p ] == [ ENV['BASIC_AUTH_USER'], ENV['BASIC_AUTH_PASSWORD'] ]
+      end
+    end
   end
 end
