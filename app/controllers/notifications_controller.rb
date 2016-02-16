@@ -37,7 +37,8 @@ class NotificationsController < ApplicationController
     params.permit(:user_id,
                   :subject_id,
                   :subject_type,
-                  :kind)
+                  :kind,
+                  :created_at)
   end
 
 end
