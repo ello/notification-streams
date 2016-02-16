@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160213003517) do
+ActiveRecord::Schema.define(version: 20160216165349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "notifications", force: :cascade do |t|
+  create_table "notifications", id: false, force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "subject_id"
     t.string   "subject_type"
