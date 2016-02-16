@@ -2,7 +2,7 @@
 
 # Postgres-based per-user activity feeds
 
-[![Build Status](https://travis-ci.org/ello/notifications-stream.svg?branch=master)](https://travis-ci.org/ello/notifications-stream)
+[![Build Status](https://travis-ci.org/ello/notification-streams.svg?branch=master)](https://travis-ci.org/ello/notification-streams)
 [![Code Climate](https://codeclimate.com/github/ello/notification-streams/badges/gpa.svg)](https://codeclimate.com/github/ello/notification-streams)
 [![security](https://hakiri.io/github/ello/notification-streams/master.svg)](https://hakiri.io/github/ello/notification-streams/master)
 
