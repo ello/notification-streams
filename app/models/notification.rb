@@ -88,6 +88,17 @@ class Notification < ApplicationRecord
     where(kind: NOTIFICATION_CATEGORIES[category.to_sym])
   end
 
+  def self.offset_by(user_id, quantity)
+    where(<<-EOF, user_id, quantity)
+      (subject_id, subject_type, created_at, kind) NOT IN (
+        SELECT subject_id, subject_type, created_at, kind
+        FROM notifications
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        LIMIT ?)
+    EOF
+  end
+
   def self.for_notification_stream(user_id,
                                    category = nil,
                                    excluded_originating_user_ids = [],
