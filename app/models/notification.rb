@@ -82,7 +82,11 @@ class Notification < ApplicationRecord
     where(user_id: user_id)
   end
 
-  def self.for_notification_stream(user_id, category = nil, before = nil, limit = nil)
+  def self.for_notification_stream(user_id,
+                                   category = nil,
+                                   excluded_originating_user_ids = [],
+                                   before = nil,
+                                   limit = nil)
     category ||= :all
     limit ||= 25
     before = Time.parse(before) if before.is_a?(String)
@@ -91,6 +95,7 @@ class Notification < ApplicationRecord
     for_user(user_id).
       select(*SELECTED_FIELDS).
       where(kind: NOTIFICATION_CATEGORIES[category.to_sym]).
+      where.not(originating_user_id: excluded_originating_user_ids).
       where('created_at < ?', before).
       order('created_at DESC').
       limit(limit)

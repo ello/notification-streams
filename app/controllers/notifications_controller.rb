@@ -26,6 +26,7 @@ class NotificationsController < ApplicationController
   def show
     render json: Notification.for_notification_stream(params[:user_id],
                                                       params[:category],
+                                                      excluded_originating_user_ids,
                                                       params[:before],
                                                       params[:limit]
                                                      ).to_json
@@ -33,12 +34,17 @@ class NotificationsController < ApplicationController
 
   private
 
+  def excluded_originating_user_ids
+    (params[:exclude_originating_user_ids] || '').split(',').map(&:to_i)
+  end
+
   def notification_params
     params.permit(:user_id,
                   :subject_id,
                   :subject_type,
                   :kind,
-                  :created_at)
+                  :created_at,
+                  :originating_user_id)
   end
 
 end

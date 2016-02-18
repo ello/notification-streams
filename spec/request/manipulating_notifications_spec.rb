@@ -8,6 +8,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         post '/api/v1/users/1/notifications', params: { subject_id: 10,
                                                         subject_type: 'Post',
                                                         kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
+                                                        originating_user_id: 1,
                                                         created_at: 1.day.ago }
       end
 
@@ -18,6 +19,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         expect(notification.subject_id).to eq(10)
         expect(notification.subject_type).to eq('Post')
         expect(notification.kind).to eq(Notification::COMMENT_MENTION_NOTIFICATION_KIND)
+        expect(notification.originating_user_id).to eq(1)
         expect(notification.created_at).to eq(1.day.ago)
       end
 
@@ -50,6 +52,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
                                      kind: Notification::COMMENT_NOTIFICATION_KIND,
                                      subject_id: 10,
                                      subject_type: 'Post',
+                                     originating_user_id: 2,
                                      created_at: 2.days.ago)
     end
     let!(:notification2) do
@@ -57,6 +60,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
                                      kind: Notification::LOVE_NOTIFICATION_KIND,
                                      subject_id: 11,
                                      subject_type: 'Post',
+                                     originating_user_id: 3,
                                      created_at: 1.day.ago)
     end
 
@@ -92,6 +96,26 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
       end
 
       it 'only returns notifications in the specified category' do
+        expect(response.status).to eq(200)
+        expect(response_json).to eq(
+          [
+            { 'user_id' => 1,
+              'subject_id' => 11,
+              'subject_type' => 'Post',
+              'kind' => 'love_notification',
+              'created_at' => 1.day.ago.as_json
+            }
+          ]
+        )
+      end
+    end
+
+    describe 'filtering by excluding originating user ids' do
+      before do
+        get '/api/v1/users/1/notifications', params: { exclude_originating_user_ids: '2,5' }
+      end
+
+      it 'does not return notifications from the specified originating user' do
         expect(response.status).to eq(200)
         expect(response_json).to eq(
           [
@@ -149,11 +173,22 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
   end
 
   describe 'deleting notifications for a user' do
-    let!(:notification) { CreateNotificationForUser.call(user_id: 1,
-                                                         kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
-                                                         subject_id: 10,
-                                                         subject_type: 'Post',
-                                                         created_at: Time.zone.now) }
+    let!(:notification) do
+      CreateNotificationForUser.call(user_id: 1,
+                                     kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
+                                     subject_id: 10,
+                                     subject_type: 'Post',
+                                     originating_user_id: 2,
+                                     created_at: Time.zone.now)
+    end
+    let!(:notification) do
+      CreateNotificationForUser.call(user_id: 2,
+                                     kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
+                                     subject_id: 10,
+                                     subject_type: 'Post',
+                                     originating_user_id: 1,
+                                     created_at: Time.zone.now)
+    end
 
     before do
       delete '/api/v1/users/1/notifications'
@@ -161,6 +196,10 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
     it 'removes all notifications for that user' do
       expect(Notification.where(user_id: 1).count).to eq(0)
+    end
+
+    it 'removes all notifications originating from that user' do
+      expect(Notification.where(originating_user_id: 1).count).to eq(0)
     end
 
     it 'responds with a 202 and an empty body' do
@@ -174,6 +213,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
                                                          kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
                                                          subject_id: 10,
                                                          subject_type: 'Post',
+                                                         originating_user_id: 2,
                                                          created_at: Time.zone.now) }
 
     before do
