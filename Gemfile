@@ -18,6 +18,7 @@ end
 
 group :test do
   gem 'rspec-rails-time-metadata'
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 group :production do

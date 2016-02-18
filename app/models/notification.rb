@@ -63,7 +63,6 @@ class Notification < ApplicationRecord
 
   validates         :user_id,
                     :subject_id,
-                    :subject_type,
                     presence: true
 
   validates         :subject_type,
