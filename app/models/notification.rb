@@ -6,7 +6,7 @@ class Notification < ApplicationRecord
                       :created_at,
                       :kind ].freeze
 
-  SUBJECT_TYPES = %w(User Post).freeze
+  SUBJECT_TYPES = %w(User Post Love).freeze
 
   INVITATION_ACCEPTED_POST_KIND = 'invitation_accepted_post'.freeze
   NEW_FOLLOWED_USER_POST_KIND = 'new_followed_user_post'.freeze
