@@ -4,7 +4,8 @@ class Notification < ApplicationRecord
                       :subject_id,
                       :subject_type,
                       :created_at,
-                      :kind ].freeze
+                      :kind,
+                      :originating_user_id ].freeze
 
   SUBJECT_TYPES = %w(User Post Love).freeze
 
@@ -101,7 +102,7 @@ class Notification < ApplicationRecord
   end
 
   def as_json(options = nil)
-    attributes.slice(*%w(user_id subject_id subject_type kind created_at))
+    attributes.slice(*%w(user_id subject_id subject_type kind created_at originating_user_id))
   end
 
 end

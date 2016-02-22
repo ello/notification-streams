@@ -23,7 +23,7 @@ RSpec.describe Notification, type: :model do
     it { is_expected.not_to allow_value('Foo').for(:subject_type) }
 
     Notification::NOTIFICATION_STREAM_KINDS.each do |kind|
-      it { is_expected.not_to allow_value(kind).for(:kind) }
+      it { is_expected.to allow_value(kind).for(:kind) }
     end
 
     it { is_expected.not_to allow_value('foo_notification').for(:kind) }
