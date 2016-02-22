@@ -101,7 +101,7 @@ class Notification < ApplicationRecord
   end
 
   def as_json(options = nil)
-    attributes.slice(*%w(user_id subject_id subject_type kind created_at))
+    attributes.slice(*%w(user_id subject_id subject_type kind created_at originating_user_id))
   end
 
 end
