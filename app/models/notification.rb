@@ -4,7 +4,8 @@ class Notification < ApplicationRecord
                       :subject_id,
                       :subject_type,
                       :created_at,
-                      :kind ].freeze
+                      :kind,
+                      :originating_user_id ].freeze
 
   SUBJECT_TYPES = %w(User Post Love).freeze
 
