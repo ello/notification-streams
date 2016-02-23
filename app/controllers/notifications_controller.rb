@@ -6,7 +6,8 @@ class NotificationsController < ApplicationController
     if result.success?
       head :created
     else
-      head :unprocessable_entity
+      render json: { errors: result.notification.errors },
+             status: :unprocessable_entity
     end
   end
 

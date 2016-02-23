@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_time: true do
 
+  let(:response_json) { JSON.parse(response.body) }
+
   describe 'creating a notification for a user' do
     describe 'when valid parameters are passed' do
       before do
@@ -27,6 +29,25 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         expect(response.status).to eq(201)
         expect(response.body).to be_empty
       end
+
+      describe 'when attempting to insert duplicates' do
+        before do
+          post '/api/v1/users/1/notifications', params: { subject_id: 10,
+                                                          subject_type: 'Post',
+                                                          kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
+                                                          originating_user_id: 1,
+                                                          created_at: 1.day.ago }
+        end
+
+        it 'does not create duplicate objects' do
+          expect(Notification.count).to eq(1)
+        end
+
+        it 'still responds with a 201 and an empty body' do
+          expect(response.status).to eq(201)
+          expect(response.body).to be_empty
+        end
+      end
     end
 
     describe 'when invalid parameters are passed' do
@@ -40,13 +61,18 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
       it 'responds with a 422 and an empty body' do
         expect(response.status).to eq(422)
-        expect(response.body).to be_empty
+        expect(response_json).to eq(
+          'errors' => {
+            'subject_id' => [ "can't be blank" ],
+            'subject_type' => [ "can't be blank", 'is not included in the list' ],
+            'kind' => [ "can't be blank", 'is not included in the list' ]
+          }
+        )
       end
     end
   end
 
   describe 'retrieving notifications for a user', freeze_time: true do
-    let(:response_json) { JSON.parse(response.body) }
     let!(:notification1) do
       CreateNotificationForUser.call(user_id: 1,
                                      kind: Notification::COMMENT_NOTIFICATION_KIND,
