@@ -27,6 +27,25 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         expect(response.status).to eq(201)
         expect(response.body).to be_empty
       end
+
+      describe 'when attempting to insert duplicates' do
+        before do
+          post '/api/v1/users/1/notifications', params: { subject_id: 10,
+                                                          subject_type: 'Post',
+                                                          kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
+                                                          originating_user_id: 1,
+                                                          created_at: 1.day.ago }
+        end
+
+        it 'does not create duplicate objects' do
+          expect(Notification.count).to eq(1)
+        end
+
+        it 'still responds with a 201 and an empty body' do
+          expect(response.status).to eq(201)
+          expect(response.body).to be_empty
+        end
+      end
     end
 
     describe 'when invalid parameters are passed' do
