@@ -6,8 +6,8 @@ gem 'rails', '>= 5.0.0.beta2', '< 5.1'
 gem 'pg', '~> 0.18'
 gem 'puma'
 
-# New Relic doesn't support Rails 5 yet :(
-# gem 'newrelic_rpm'
+# New Relic just added Rails 5 support
+gem 'newrelic_rpm', '>= 3.15.0.314'
 
 gem 'interactor-rails', '~> 2.0'
 
