@@ -5,7 +5,6 @@ namespace :trim do
     keep = Integer(args[:keep_count] || 1000)
     while user_id = TrimQueue.pop
       TrimNotificationsForUser.call(user_id: user_id,
-                                    category: :all,
                                     keep: keep)
     end
   end

@@ -41,7 +41,7 @@ class Notification < ApplicationRecord
     REPOST_NOTIFICATION_KIND
   ].freeze
 
-  NOTIFICATION_CATEGORIES = {
+  CATEGORIES = {
     all: NOTIFICATION_STREAM_KINDS,
     comments: [
       COMMENT_NOTIFICATION_KIND,
@@ -85,36 +85,37 @@ class Notification < ApplicationRecord
   end
 
   def self.for_category(category)
-    where(kind: NOTIFICATION_CATEGORIES[category.to_sym])
+    where(kind: CATEGORIES[category.to_sym])
   end
 
-  def self.offset_by(user_id, quantity)
-    where(<<-EOF, user_id, quantity)
-      (subject_id, subject_type, created_at, kind) NOT IN (
-        SELECT subject_id, subject_type, created_at, kind
-        FROM notifications
-        WHERE user_id = ?
-        ORDER BY created_at DESC
-        LIMIT ?)
-    EOF
+  def self.selected_fields
+    select(*SELECTED_FIELDS)
+  end
+
+  def self.before(date)
+    where('created_at < ?', date)
+  end
+
+  def self.reverse_chronological
+    order('created_at DESC')
   end
 
   def self.for_notification_stream(user_id,
                                    category = nil,
                                    excluded_originating_user_ids = [],
-                                   before = nil,
+                                   before_date = nil,
                                    limit = nil)
     category ||= :all
     limit ||= 25
-    before = Time.parse(before) if before.present? && before.is_a?(String)
-    before = Time.zone.now unless before.present?
+    before_date = Time.parse(before_date) if before_date.present? && before_date.is_a?(String)
+    before_date = Time.zone.now unless before_date.present?
 
     for_user(user_id).
       for_category(category).
-      select(*SELECTED_FIELDS).
+      selected_fields.
       where.not(originating_user_id: excluded_originating_user_ids).
-      where('created_at < ?', before).
-      order('created_at DESC').
+      before(before_date).
+      reverse_chronological.
       limit(limit)
   end
 
