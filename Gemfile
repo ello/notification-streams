@@ -22,5 +22,6 @@ group :test do
 end
 
 group :production do
+  gem 'honeybadger', '~> 2.0'
   gem 'rails_12factor'
 end

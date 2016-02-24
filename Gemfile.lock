@@ -48,6 +48,7 @@ GEM
     erubis (2.7.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    honeybadger (2.5.1)
     i18n (0.7.0)
     interactor (3.1.0)
     interactor-rails (2.0.1)
@@ -155,6 +156,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  honeybadger (~> 2.0)
   interactor-rails (~> 2.0)
   newrelic_rpm (>= 3.15.0.314)
   pg (~> 0.18)
