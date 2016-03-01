@@ -1,5 +1,7 @@
 class Notification < ApplicationRecord
 
+  TIME_STAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%N%z'.freeze
+
   SELECTED_FIELDS = [ :user_id,
                       :subject_id,
                       :subject_type,
@@ -102,7 +104,9 @@ class Notification < ApplicationRecord
   end
 
   def as_json(options = nil)
-    attributes.slice(*%w(user_id subject_id subject_type kind created_at originating_user_id))
+    attributes.
+      slice(*%w(user_id subject_id subject_type kind originating_user_id)).
+      merge('created_at' => created_at.strftime(TIME_STAMP_FORMAT))
   end
 
 end

@@ -103,14 +103,14 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_id' => 11,
               'subject_type' => 'Post',
               'kind' => 'love_notification',
-              'created_at' => 1.day.ago.as_json,
+              'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
               'originating_user_id' => 3
             },
             { 'user_id' => 1,
               'subject_id' => 10,
               'subject_type' => 'Post',
               'kind' => 'comment_notification',
-              'created_at' => 2.days.ago.as_json,
+              'created_at' => 2.days.ago.strftime(Notification::TIME_STAMP_FORMAT),
               'originating_user_id' => 2
             }
           ]
@@ -131,7 +131,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_id' => 11,
               'subject_type' => 'Post',
               'kind' => 'love_notification',
-              'created_at' => 1.day.ago.as_json,
+              'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
               'originating_user_id' => 3
             }
           ]
@@ -152,7 +152,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_id' => 11,
               'subject_type' => 'Post',
               'kind' => 'love_notification',
-              'created_at' => 1.day.ago.as_json,
+              'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
               'originating_user_id' => 3
             }
           ]
@@ -173,7 +173,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_id' => 10,
               'subject_type' => 'Post',
               'kind' => 'comment_notification',
-              'created_at' => 2.days.ago.as_json,
+              'created_at' => 2.days.ago.strftime(Notification::TIME_STAMP_FORMAT),
               'originating_user_id' => 2
             }
           ]
@@ -194,7 +194,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_id' => 11,
               'subject_type' => 'Post',
               'kind' => 'love_notification',
-              'created_at' => 1.day.ago.as_json,
+              'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
               'originating_user_id' => 3
             }
           ]
