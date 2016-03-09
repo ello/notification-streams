@@ -47,3 +47,5 @@ Style/BracesAroundHashParameters:
     - braces
     - no_braces
     - context_dependent
+Style/IndentHash:
+  Enabled: false
