@@ -91,8 +91,8 @@ class Notification < ApplicationRecord
                                    limit = nil)
     category ||= :all
     limit ||= 25
-    before = Time.parse(before) if before.is_a?(String)
-    before ||= Time.zone.now
+    before = Time.parse(before) if before.present? && before.is_a?(String)
+    before = Time.zone.now unless before.present?
 
     for_user(user_id).
       select(*SELECTED_FIELDS).
