@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_time: true do
+  before do
+    allow(TrimQueue).to receive(:push)
+  end
 
   let(:response_json) { JSON.parse(response.body) }
 
@@ -30,6 +33,10 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         expect(response.body).to be_empty
       end
 
+      it 'pushes the user ID onto the trim queue' do
+        expect(TrimQueue).to have_received(:push).with('1')
+      end
+
       describe 'when attempting to insert duplicates' do
         before do
           post '/api/v1/users/1/notifications', params: { subject_id: 10,
@@ -46,6 +53,10 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         it 'still responds with a 201 and an empty body' do
           expect(response.status).to eq(201)
           expect(response.body).to be_empty
+        end
+
+        it 'only pushes the user ID onto the trim queue once' do
+          expect(TrimQueue).to have_received(:push).once
         end
       end
     end
@@ -68,6 +79,10 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
             'kind' => [ "can't be blank", 'is not included in the list' ]
           }
         )
+      end
+
+      it 'does not push the user ID onto the trim queue' do
+        expect(TrimQueue).not_to have_received(:push)
       end
     end
   end
