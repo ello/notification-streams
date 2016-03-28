@@ -1,4 +1,0 @@
-test:
-  adapter: postgresql
-  database: notifications_stream_test
-  username: postgres

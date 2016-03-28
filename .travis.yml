@@ -7,8 +7,6 @@ services:
 - redis
 addons:
   postgresql: '9.4'
-before_script:
-- cp config/database.travis.yml config/database.yml
 script:
 - RAILS_ENV=test rake db:setup spec
 notifications:
