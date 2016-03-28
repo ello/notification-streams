@@ -9,6 +9,8 @@ gem 'puma'
 # New Relic just added Rails 5 support
 gem 'newrelic_rpm', '>= 3.15.0.314'
 
+gem 'rack-timeout'
+
 gem 'redis', '~>3.2'
 
 gem 'interactor-rails', '~> 2.0'
