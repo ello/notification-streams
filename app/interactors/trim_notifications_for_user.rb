@@ -12,7 +12,7 @@ class TrimNotificationsForUser
       result = Notification.for_user(context.user_id).for_category(category).where(<<-EOF).delete_all
        (#{Notification::SELECTED_FIELDS * ','}) NOT IN (#{scope.to_sql})
       EOF
-      Rails.logger.info "Trimming #{category} for #{context.user_id}: #{result}"
+      Rails.logger.info "Trimmed #{category} for #{context.user_id}: #{result} items removed"
     end
   end
 end
