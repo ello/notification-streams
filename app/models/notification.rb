@@ -113,10 +113,18 @@ class Notification < ApplicationRecord
     for_user(user_id).
       for_category(category).
       selected_fields.
-      where.not(originating_user_id: excluded_originating_user_ids).
+      without_users(excluded_originating_user_ids).
       before(before_date).
       reverse_chronological.
       limit(limit)
+  end
+
+  def self.without_users(user_ids)
+    # While in is easier to write it is not fast for large lists.
+    # eg: where.not(originating_user_id: user_ids) is not fast
+    # So instead we compile to sql fragment.
+    sql = user_ids.map { |id| "notifications.originating_user_id != #{id}" }.join(' AND ')
+    where(sql)
   end
 
   def as_json(options = nil)
