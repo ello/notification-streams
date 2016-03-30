@@ -113,10 +113,26 @@ class Notification < ApplicationRecord
     for_user(user_id).
       for_category(category).
       selected_fields.
-      where.not(originating_user_id: excluded_originating_user_ids).
+      without_users(excluded_originating_user_ids).
       before(before_date).
       reverse_chronological.
       limit(limit)
+  end
+
+  def self.without_users(user_ids)
+    if !user_ids.empty?
+      # While the following is easier to write it is not fast for large lists.
+      #   where.not(originating_user_id: user_ids)
+      # So instead we do an anti-join on a values table:
+      #   http://stackoverflow.com/questions/17813492/postgres-not-in-performance
+      joins(<<-SQL).where('excluded_id IS NULL')
+        LEFT OUTER JOIN (
+          VALUES #{user_ids.map { |id| "(#{id})" }.join(',')}
+        ) excluded(excluded_id) ON (notifications.originating_user_id = excluded_id)
+      SQL
+    else
+      where({})
+    end
   end
 
   def as_json(options = nil)
