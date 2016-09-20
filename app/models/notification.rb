@@ -9,7 +9,7 @@ class Notification < ApplicationRecord
                       :kind,
                       :originating_user_id ].freeze
 
-  SUBJECT_TYPES = %w(User Post Love).freeze
+  SUBJECT_TYPES = %w(User Post Love Watch).freeze
 
   INVITATION_ACCEPTED_POST_KIND = 'invitation_accepted_post'.freeze
   NEW_FOLLOWED_USER_POST_KIND = 'new_followed_user_post'.freeze
@@ -24,6 +24,10 @@ class Notification < ApplicationRecord
   LOVE_ON_ORIGINAL_POST_NOTIFICATION_KIND = 'love_on_original_post_notification'.freeze
   WELCOME_NOTIFICATION_KIND = 'welcome_notification'.freeze
   REPOST_NOTIFICATION_KIND = 'repost_notification'.freeze
+  WATCH_KIND = 'watch_notification'.freeze
+  WATCH_ON_REPOST_KIND = 'watch_on_repost_notification'.freeze
+  WATCH_ON_ORIGINAL_POST_KIND = 'watch_on_original_post_notification'.freeze
+  WATCH_COMMENT_KIND = 'watch_comment_notification'.freeze
 
   NOTIFICATION_STREAM_KINDS = [
     NEW_FOLLOWER_POST_KIND,
@@ -38,7 +42,11 @@ class Notification < ApplicationRecord
     LOVE_ON_REPOST_NOTIFICATION_KIND,
     LOVE_ON_ORIGINAL_POST_NOTIFICATION_KIND,
     WELCOME_NOTIFICATION_KIND,
-    REPOST_NOTIFICATION_KIND
+    REPOST_NOTIFICATION_KIND,
+    WATCH_KIND,
+    WATCH_ON_REPOST_KIND,
+    WATCH_ON_ORIGINAL_POST_KIND,
+    WATCH_COMMENT_KIND
   ].freeze
 
   CATEGORIES = {
