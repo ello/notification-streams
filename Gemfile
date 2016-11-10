@@ -5,6 +5,7 @@ ruby '2.2.3'
 gem 'rails', '~> 5.0.0.1'
 gem 'pg', '~> 0.18'
 gem 'puma'
+gem 'puma_worker_killer'
 
 # New Relic just added Rails 5 support
 gem 'newrelic_rpm', '>= 3.15.0.314'

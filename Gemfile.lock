@@ -44,6 +44,7 @@ GEM
     concurrent-ruby (1.0.2)
     diff-lcs (1.2.5)
     erubis (2.7.0)
+    get_process_mem (0.2.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     honeybadger (2.6.1)
@@ -76,6 +77,9 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     puma (3.6.0)
+    puma_worker_killer (0.0.7)
+      get_process_mem (~> 0.2)
+      puma (>= 2.7, < 4)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -162,6 +166,7 @@ DEPENDENCIES
   pg (~> 0.18)
   pry-rails
   puma
+  puma_worker_killer
   rack-timeout
   rails (~> 5.0.0.1)
   rails_12factor
@@ -171,4 +176,4 @@ DEPENDENCIES
   shoulda-matchers (~> 3.1)
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

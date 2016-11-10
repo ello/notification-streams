@@ -45,3 +45,8 @@ on_worker_boot do
   ActiveRecord::Base.establish_connection
   Redis.current.client.reconnect
 end
+
+before_fork do
+  require 'puma_worker_killer'
+  PumaWorkerKiller.enable_rolling_restart # Default is every 6 hours
+end
