@@ -135,7 +135,7 @@ class Notification < ApplicationRecord
       #   http://stackoverflow.com/questions/17813492/postgres-not-in-performance
       joins(<<-SQL).where('excluded_id IS NULL')
         LEFT OUTER JOIN (
-          VALUES #{user_ids.map { |id| "(#{id})" }.join(',')}
+          VALUES #{user_ids.map { |id| "(#{ActiveRecord::Base.connection.quote(id)})" }.join(',')}
         ) excluded(excluded_id) ON (notifications.originating_user_id = excluded_id)
       SQL
     else
