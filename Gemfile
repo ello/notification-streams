@@ -2,17 +2,17 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'rails', '~> 5.0.0.1'
+gem 'rails', '~> 5.0.0'
 gem 'pg', '~> 0.18'
 gem 'puma'
 gem 'puma_worker_killer'
 
 # New Relic just added Rails 5 support
-gem 'newrelic_rpm', '>= 3.15.0.314'
+gem 'newrelic_rpm'
 
 gem 'rack-timeout'
 
-gem 'redis', '~>3.2'
+gem 'redis', '~> 3.2'
 
 gem 'interactor-rails', '~> 2.0'
 
