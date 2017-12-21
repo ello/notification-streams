@@ -29,6 +29,7 @@ class Notification < ApplicationRecord
   WATCH_ON_ORIGINAL_POST_KIND = 'watch_on_original_post_notification'.freeze
   WATCH_COMMENT_KIND = 'watch_comment_notification'.freeze
   APPROVED_ARTIST_INVITE_SUBMISSION_KIND = 'approved_artist_invite_submission'.freeze
+  APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND = 'approved_artist_invite_submission_notification_for_followers'.freeze
 
   NOTIFICATION_STREAM_KINDS = [
     NEW_FOLLOWER_POST_KIND,
@@ -48,7 +49,8 @@ class Notification < ApplicationRecord
     WATCH_ON_REPOST_KIND,
     WATCH_ON_ORIGINAL_POST_KIND,
     WATCH_COMMENT_KIND,
-    APPROVED_ARTIST_INVITE_SUBMISSION_KIND
+    APPROVED_ARTIST_INVITE_SUBMISSION_KIND,
+    APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND
   ].freeze
 
   CATEGORIES = {
