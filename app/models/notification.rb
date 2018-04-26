@@ -9,7 +9,7 @@ class Notification < ApplicationRecord
                       :kind,
                       :originating_user_id ].freeze
 
-  SUBJECT_TYPES = %w(User Post Love Watch ArtistInviteSubmission).freeze
+  SUBJECT_TYPES = %w(User Post Love Watch ArtistInviteSubmission CategoryPost).freeze
 
   INVITATION_ACCEPTED_POST_KIND = 'invitation_accepted_post'.freeze
   NEW_FOLLOWED_USER_POST_KIND = 'new_followed_user_post'.freeze
@@ -30,6 +30,8 @@ class Notification < ApplicationRecord
   WATCH_COMMENT_KIND = 'watch_comment_notification'.freeze
   APPROVED_ARTIST_INVITE_SUBMISSION_KIND = 'approved_artist_invite_submission'.freeze
   APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND = 'approved_artist_invite_submission_notification_for_followers'.freeze
+  CATEGORY_POST_FEATURED = 'category_post_featured'.freeze
+  CATEGORY_POST_REPOST_FEATURED = 'category_post_repost_featured'.freeze
 
   NOTIFICATION_STREAM_KINDS = [
     NEW_FOLLOWER_POST_KIND,
@@ -50,7 +52,9 @@ class Notification < ApplicationRecord
     WATCH_ON_ORIGINAL_POST_KIND,
     WATCH_COMMENT_KIND,
     APPROVED_ARTIST_INVITE_SUBMISSION_KIND,
-    APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND
+    APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND,
+    CATEGORY_POST_FEATURED,
+    CATEGORY_POST_REPOST_FEATURED,
   ].freeze
 
   CATEGORIES = {
