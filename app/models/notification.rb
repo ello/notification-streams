@@ -31,7 +31,8 @@ class Notification < ApplicationRecord
   APPROVED_ARTIST_INVITE_SUBMISSION_KIND = 'approved_artist_invite_submission'.freeze
   APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND = 'approved_artist_invite_submission_notification_for_followers'.freeze
   CATEGORY_POST_FEATURED = 'category_post_featured'.freeze
-  CATEGORY_POST_REPOST_FEATURED = 'category_post_repost_featured'.freeze
+  CATEGORY_REPOST_FEATURED = 'category_repost_featured'.freeze # repost author
+  CATEGORY_POST_VIA_REPOST_FEATURED = 'category_post_via_repost_featured'.freeze # original author
 
   NOTIFICATION_STREAM_KINDS = [
     NEW_FOLLOWER_POST_KIND,
@@ -54,7 +55,8 @@ class Notification < ApplicationRecord
     APPROVED_ARTIST_INVITE_SUBMISSION_KIND,
     APPROVED_ARTIST_INVITE_SUBMISSION_FOR_FOLLOWERS_KIND,
     CATEGORY_POST_FEATURED,
-    CATEGORY_POST_REPOST_FEATURED,
+    CATEGORY_REPOST_FEATURED,
+    CATEGORY_POST_VIA_REPOST_FEATURED,
   ].freeze
 
   CATEGORIES = {
