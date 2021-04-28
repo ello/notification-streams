@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe TrimNotificationsForUser do
@@ -15,8 +17,8 @@ describe TrimNotificationsForUser do
   end
 
   it 'removes notifications beyond a specified keep threshold' do
-    TrimNotificationsForUser.call(user_id: 1,
-                                  keep: 3)
+    described_class.call(user_id: 1,
+                         keep: 3)
     expect(Notification.for_user(1).count).to eq(3)
   end
 
@@ -33,8 +35,8 @@ describe TrimNotificationsForUser do
     end
 
     it 'keeps the specified number of notifications in each category' do
-      TrimNotificationsForUser.call(user_id: 1,
-                                    keep: 1)
+      described_class.call(user_id: 1,
+                           keep: 1)
       expect(Notification.for_user(1).count).to eq(2)
       expect(Notification.for_user(1).for_category(:loves).count).to eq(1)
       expect(Notification.for_user(1).for_category(:mentions).count).to eq(1)

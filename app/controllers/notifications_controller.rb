@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationsController < ApplicationController
 
   def create
@@ -13,10 +15,10 @@ class NotificationsController < ApplicationController
 
   def destroy
     result = if params[:user_id]
-               DestroyNotificationsForUser.call(notification_params)
-             else
-               DestroyNotificationsForSubject.call(notification_params)
-             end
+      DestroyNotificationsForUser.call(notification_params)
+    else
+      DestroyNotificationsForSubject.call(notification_params)
+    end
     if result.success?
       head :accepted
     else
@@ -29,8 +31,7 @@ class NotificationsController < ApplicationController
                                                       params[:category],
                                                       excluded_originating_user_ids,
                                                       params[:before],
-                                                      params[:limit]
-                                                     ).to_json
+                                                      params[:limit]).to_json
   end
 
   private

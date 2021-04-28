@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class TrimQueue
-  SET_KEY = 'users-pending-trim'.freeze
+  SET_KEY = 'users-pending-trim'
 
   def self.clear
     Redis.current.del SET_KEY

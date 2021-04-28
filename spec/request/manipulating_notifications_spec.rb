@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength, RSpec/LetSetup, RSpec/OverwritingSetup
 RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_time: true do
   before do
     allow(TrimQueue).to receive(:push)
@@ -63,7 +66,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
 
     describe 'when invalid parameters are passed' do
       before do
-        post '/api/v1/users/1/notifications', params: { }
+        post '/api/v1/users/1/notifications', params: {}
       end
 
       it 'does not create any Notification objects' do
@@ -74,9 +77,9 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
         expect(response.status).to eq(422)
         expect(response_json).to eq(
           'errors' => {
-            'subject_id' => [ "can't be blank" ],
-            'subject_type' => [ "can't be blank", 'is not included in the list' ],
-            'kind' => [ "can't be blank", 'is not included in the list' ]
+            'subject_id' => ["can't be blank"],
+            'subject_type' => ["can't be blank", 'is not included in the list'],
+            'kind' => ["can't be blank", 'is not included in the list']
           }
         )
       end
@@ -119,15 +122,13 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_type' => 'Post',
               'kind' => 'love_notification',
               'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
-              'originating_user_id' => 3
-            },
+              'originating_user_id' => 3 },
             { 'user_id' => 1,
               'subject_id' => 10,
               'subject_type' => 'Post',
               'kind' => 'comment_notification',
               'created_at' => 2.days.ago.strftime(Notification::TIME_STAMP_FORMAT),
-              'originating_user_id' => 2
-            }
+              'originating_user_id' => 2 }
           ]
         )
       end
@@ -147,8 +148,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_type' => 'Post',
               'kind' => 'love_notification',
               'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
-              'originating_user_id' => 3
-            }
+              'originating_user_id' => 3 }
           ]
         )
       end
@@ -168,8 +168,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_type' => 'Post',
               'kind' => 'love_notification',
               'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
-              'originating_user_id' => 3
-            }
+              'originating_user_id' => 3 }
           ]
         )
       end
@@ -189,8 +188,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_type' => 'Post',
               'kind' => 'comment_notification',
               'created_at' => 2.days.ago.strftime(Notification::TIME_STAMP_FORMAT),
-              'originating_user_id' => 2
-            }
+              'originating_user_id' => 2 }
           ]
         )
       end
@@ -210,8 +208,7 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
               'subject_type' => 'Post',
               'kind' => 'love_notification',
               'created_at' => 1.day.ago.strftime(Notification::TIME_STAMP_FORMAT),
-              'originating_user_id' => 3
-            }
+              'originating_user_id' => 3 }
           ]
         )
       end
@@ -256,12 +253,14 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
   end
 
   describe 'deleting notifications for a subject' do
-    let!(:notification) { CreateNotificationForUser.call(user_id: 1,
-                                                         kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
-                                                         subject_id: 10,
-                                                         subject_type: 'Post',
-                                                         originating_user_id: 2,
-                                                         created_at: Time.zone.now) }
+    let(:notification) do
+      CreateNotificationForUser.call(user_id: 1,
+                                     kind: Notification::COMMENT_MENTION_NOTIFICATION_KIND,
+                                     subject_id: 10,
+                                     subject_type: 'Post',
+                                     originating_user_id: 2,
+                                     created_at: Time.zone.now)
+    end
 
     before do
       delete '/api/v1/notifications', params: { subject_id: 10, subject_type: 'Post' }
@@ -277,3 +276,4 @@ RSpec.describe 'Manipulating notifications via the API', type: :request, freeze_
     end
   end
 end
+# rubocop:enable Metrics/BlockLength, RSpec/LetSetup, RSpec/OverwritingSetup

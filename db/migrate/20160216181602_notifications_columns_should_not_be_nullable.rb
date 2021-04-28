@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationsColumnsShouldNotBeNullable < ActiveRecord::Migration[5.0]
   def change
     change_column_null :notifications, :user_id, false
