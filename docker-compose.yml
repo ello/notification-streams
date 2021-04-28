@@ -13,4 +13,4 @@ rails:
   links:
     - db
   environment:
-    DATABASE_URL: 'postgres://notifications:notifications@db:5432/notifications'
+    DATABASE_URL: "postgres://notifications:notifications@db:5432/notifications"
