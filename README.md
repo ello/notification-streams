@@ -53,7 +53,7 @@ library that can be used by any application.
 This is a vanilla Rails 5 (API) application, so getting it started is fairly
 standard:
 
-- Install RVM/Rbenv/Ruby 2.3
+- Install RVM/Rbenv/Ruby 2.7
 - Install PostgreSQL (9.4 or newer) if you don’t have it already
 - Clone this repo
 - Run `bundle install` and `bundle exec rake db:setup`

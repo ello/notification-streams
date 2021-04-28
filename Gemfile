@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.1'
+ruby '2.7.3'
 
 gem 'rails', '~> 5.0.0'
 gem 'pg', '~> 0.18'
@@ -10,7 +10,7 @@ gem 'puma_worker_killer'
 # New Relic just added Rails 5 support
 gem 'newrelic_rpm'
 
-gem 'rack-timeout'
+gem 'rack-timeout', require: "rack/timeout/base"
 
 gem 'redis', '~> 3.2'
 
