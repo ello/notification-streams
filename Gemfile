@@ -16,6 +16,11 @@ gem 'redis', '~> 3.2'
 
 gem 'interactor-rails', '~> 2.0'
 
+group :development do
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
+end
+
 group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails'

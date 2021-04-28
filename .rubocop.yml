@@ -1,51 +1,68 @@
-ClassAndModuleChildren:
-  Include:
-    - lib/**/*.rb
-Documentation:
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+
+Layout/EmptyLinesAroundBlockBody:
   Enabled: false
-EmptyLinesAroundBlockBody:
+
+Layout/EmptyLinesAroundClassBody:
   Enabled: false
-EmptyLinesAroundClassBody:
+
+Layout/EmptyLinesAroundModuleBody:
   Enabled: false
-EmptyLinesAroundModuleBody:
-  Enabled: false
-ExtraSpacing:
-  Enabled: false
-LineLength:
-  # Default is that lines should be 80, but that's somewhat noisy. We want a softer limit.
-  Description: Limit lines to 120 characters.
-  Max: 120
-  Exclude:
-    - config/routes.rb
-Lint/EndAlignment:
-  # The value `keyword` means that `end` should be aligned with the matching
-  # keyword (if, while, etc.).
-  # The value `variable` means that in assignments, `end` should be aligned
-  # with the start of the variable on the left hand side of `=`. In all other
-  # situations, `end` should still be aligned with the keyword.
-  AlignWith: variable
-  SupportedStyles:
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+  SupportedStylesAlignWith:
     - keyword
     - variable
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 160
+  Exclude:
+    - config/routes.rb
+
+Layout/SpaceBeforeFirstArg:
+  Enabled: false
+
 Lint/UselessAccessModifier:
   Enabled: false
-SingleSpaceBeforeFirstArg:
-  Enabled: false
-SpaceInsideBrackets:
-  Enabled: false
-StringLiterals:
-  EnforcedStyle: single_quotes
-  Enabled: true
-Style/Blocks:
-  Enabled: false
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/BlockLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 20
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/NestedGroups:
+  Max: 5
+
+Style/ClassAndModuleChildren:
+  Include:
+    - lib/**/*.rb
+
 Style/CollectionMethods:
   PreferredMethods:
-    find: 'detect'
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
-  SupportedStyles:
-    - braces
-    - no_braces
-    - context_dependent
-Style/IndentHash:
+    find: "detect"
+
+Style/Documentation:
   Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  Enabled: true
