@@ -4,7 +4,7 @@
 
 > Postgres-based per-user activity feeds
 
-[![Build Status](https://travis-ci.org/ello/notification-streams.svg?branch=master)](https://travis-ci.org/ello/notification-streams)
+[![Build Status](https://travis-ci.com/ello/notification-streams.svg?branch=main)](https://travis-ci.com/ello/notification-streams)
 [![Code Climate](https://codeclimate.com/github/ello/notification-streams/badges/gpa.svg)](https://codeclimate.com/github/ello/notification-streams)
 
 Within Ello, we have two very distinct styles of streams that we display to a
@@ -62,7 +62,7 @@ standard:
 
 ## License
 
-Streams is released under the [MIT License](blob/master/LICENSE.txt)
+Streams is released under the [MIT License](blob/main/LICENSE.txt)
 
 ## Code of Conduct
 
