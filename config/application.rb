@@ -31,7 +31,7 @@ module NotificationsStream
 
     # Use basic auth if it's configured
     if ENV['BASIC_AUTH_USER'] && ENV['BASIC_AUTH_PASSWORD']
-      config.middleware.use '::Rack::Auth::Basic' do |u, p|
+      config.middleware.use Rack::Auth::Basic do |u, p|
         [u, p] == [ENV['BASIC_AUTH_USER'], ENV['BASIC_AUTH_PASSWORD']]
       end
     end
